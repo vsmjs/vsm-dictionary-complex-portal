@@ -67,16 +67,24 @@ documentation for the API here: https://www.ebi.ac.uk/ebisearch/documentation.eb
 This specification relates to the function:  
  `getDictInfos(options, cb)`
 
-Since `vsm-dictionary-complex-portal` has only one sub-dictionary
-(it's a uni-dictionary!), `getDictInfos` returns a static object with properties:
+If the `options.filter.id` is not properly defined 
+or the `https://www.ebi.ac.uk/complexportal` dictID is included in the 
+list of ids used for filtering, `getDictInfos` returns a static object 
+with the following properties:
 - `id`: 'https://www.ebi.ac.uk/complexportal' (will be used as a `dictID`)
 - `abbrev`: 'Complex Portal'
 - `name`: 'Complex Portal'
+
+Otherwise, an empty result is returned.
 
 ### Map Complex Portal to Entry VSM object
 
 This specification relates to the function:  
  `getEntries(options, cb)`
+
+Firstly, if the `options.filter.dictID` is properly defined and in the list of 
+dictIDs the `https://www.ebi.ac.uk/complexportal` dictID is not included, then 
+an **empty array** of entry objects is returned.
 
 If the `options.filter.id` is properly defined (with IDs like
 `https://www.ebi.ac.uk/complexportal/complex/CPX-200`) then we use a query like this:
@@ -140,8 +148,12 @@ Complex Portal field | Type | Required | VSM entry/match object property | Notes
 This specification relates to the function:  
  `getEntryMatchesForString(str, options, cb)`
 
-An example of a URL string that is being built and send to the EBI Search's REST 
-API when requesting for `tp53`, is:
+Firstly, if the `options.filter.dictID` is properly defined and in the list of 
+dictIDs the `https://www.ebi.ac.uk/complexportal` dictID is not included, then 
+an **empty array** of match objects is returned.
+
+Otherwise, an example of a URL string that is being built and send to the EBI 
+Search's REST API when requesting for `tp53`, is:
 ```
 https://www.ebi.ac.uk/ebisearch/ws/rest/complex-portal?query=tp53&fields=id%2Cname%2Cdescription%2Ccomplex_systematic_name%2Ccomplex_synonym%2Corganism&size=20&start=0&format=json
 ```

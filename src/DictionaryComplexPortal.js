@@ -29,19 +29,44 @@ module.exports = class DictionaryComplexPortal extends Dictionary {
   }
 
   getDictInfos(options, cb) {
-    return cb(null,
-      {
-        items: [
-          {
-            id: this.complexPortalDictID,
-            abbrev: 'Complex Portal',
-            name: 'Complex Portal'
-          }
-        ]
-      });
+    let res = {
+      items: [
+        {
+          id: this.complexPortalDictID,
+          abbrev: 'Complex Portal',
+          name: 'Complex Portal'
+        }
+      ]
+    };
+
+    if (!this.hasProperFilterIDProperty(options)) {
+      return cb(null, res);
+    } else {
+      // keep only the domain-specific dictID(s)
+      let idList = options.filter.id.filter(dictID =>
+        dictID.trim() === this.complexPortalDictID
+      );
+
+      if (idList.length === 0) {
+        return cb(null, { items: [] });
+      } else {
+        return cb(null, res);
+      }
+    }
   }
 
   getEntries(options, cb) {
+    if (this.hasProperFilterDictIDProperty(options)) {
+      // keep only the domain-specific dictID(s)
+      let idList = options.filter.dictID.filter(dictID =>
+        dictID.trim() === this.complexPortalDictID
+      );
+
+      if (idList.length === 0) {
+        return cb(null, { items: [] });
+      }
+    }
+
     const url = this.prepareEntrySearchURL(options);
 
     if (this.enableLogging)
@@ -67,7 +92,18 @@ module.exports = class DictionaryComplexPortal extends Dictionary {
   }
 
   getEntryMatchesForString(str, options, cb) {
-    if ((!str) || (str.trim() === '')) return cb(null, {items: []});
+    if ((!str) || (str.trim() === '')) return cb(null, { items: [] });
+
+    if (this.hasProperFilterDictIDProperty(options)) {
+      // keep only the domain-specific dictID(s)
+      let idList = options.filter.dictID.filter(dictID =>
+        dictID.trim() === this.complexPortalDictID
+      );
+
+      if (idList.length === 0) {
+        return cb(null, { items: [] });
+      }
+    }
 
     const url = this.prepareMatchStringSearchURL(str, options);
 
@@ -264,6 +300,13 @@ module.exports = class DictionaryComplexPortal extends Dictionary {
       ((page - 1) * pageSize),
       Math.min(page * pageSize, numOfResults)
     );
+  }
+
+  hasProperFilterDictIDProperty(options) {
+    return options.hasOwnProperty('filter')
+      && options.filter.hasOwnProperty('dictID')
+      && Array.isArray(options.filter.dictID)
+      && options.filter.dictID.length !== 0;
   }
 
   hasProperFilterIDProperty(options) {
