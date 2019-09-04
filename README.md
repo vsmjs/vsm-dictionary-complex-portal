@@ -143,6 +143,17 @@ Complex Portal field | Type | Required | VSM entry/match object property | Notes
 `complex_synonym` | Array | NO | `terms[i].str` | We map the whole array
 `organism` | Array | NO | `z.species` | We use the first element only
 
+Note that the above mapping describes what we as developers thought as the most
+reasonable. There is though a global option `optimap` that you can pass to the 
+`DictionaryComplexPortal` object, which optimizes the above mapping for curator clarity
+and use. The **default value is true** and what changes in the mapping table
+above (which is the mapping for `optimap: false` actually) is that the VSM's `descr` 
+entry/match object property takes the combined value of the `id`, the species
+name (`organism`) and the `description` (in that order). 
+The reason behind this is that we wanted to make `description` a little more 
+clear by providing the Complex Portal ID and the species so that the curator 
+will know exactly which complex we are referring to.
+
 ### Map Complex Portal to Match VSM object
 
 This specification relates to the function:  

@@ -8,6 +8,8 @@ describe('DictionaryComplexPortal.js', () => {
 
   const testURLBase = 'http://test';
   const dict =
+    new DictionaryComplexPortal({ baseURL:testURLBase, log:true, optimap:false });
+  const dictOptimized =
     new DictionaryComplexPortal({ baseURL: testURLBase, log: true });
 
   const melanomaStr = 'melanoma';
@@ -150,6 +152,49 @@ describe('DictionaryComplexPortal.js', () => {
         ]
       );
 
+      dictOptimized.mapComplexPortalResToEntryObj(JSON.parse(getIDStr))
+        .should.deep.equal(
+          [
+            {
+              id: 'https://www.ebi.ac.uk/complexportal/complex/CPX-2000',
+              dictID: 'https://www.ebi.ac.uk/complexportal',
+              descr: 'CPX-2000, human; 9606, Catalyzes the phosphorylation of fructose 6-phosphate to fructose 1,6-bisphosphate in the presence of MgATP, the first irreversible step for glycolysis. Present in the erythrocyte.',
+              terms: [
+                {
+                  str: '6-phosphofructokinase, ML3 heterotetramer'
+                },
+                {
+                  str: '3xPFKL:PFKM'
+                },
+                {
+                  str: 'PFK-ML3'
+                },
+                {
+                  str: '6-phosphofructokinase'
+                },
+                {
+                  str: 'phosphofructokinase'
+                },
+                {
+                  str: 'phosphohexokinase'
+                },
+                {
+                  str: '6PF-1-K'
+                },
+                {
+                  str: 'Pfk-1'
+                },
+                {
+                  str: 'PFK'
+                }
+              ],
+              z: {
+                species: 'human; 9606'
+              }
+            }
+          ]
+        );
+
       cb();
     });
   });
@@ -165,6 +210,33 @@ describe('DictionaryComplexPortal.js', () => {
               dictID: 'https://www.ebi.ac.uk/complexportal',
               str: 'SMC5-SMC6 SUMO ligase complex',
               descr: 'SUMO ligase complex with a role in homologous recombination (HR) and replication. Required for chromosome segregation at repetitive sequences.  Localizes to repetitive elements such as the rDNA and telomeres  where is is thought to promote and resolve HR-dependent intermediates. Also required for telomere maintenance during replication and telomere elongation and for  SUMOylating components of the replisome, such as MCM2 (P29469) and the POL2 (P21951) subunit of the DNA polymerase epsilon complex (CPX-2110), which is important for replication fork progression in the presence of DNA-damaging agents.',
+              type: 'T',
+              terms: [
+                {
+                  str: 'SMC5-SMC6 SUMO ligase complex'
+                },
+                {
+                  str: 'KRE29:MMS21:NSE1:NSE3:NSE4:NSE5:SMC5:SMC6'
+                },
+                {
+                  str: 'Resolvin complex'
+                }
+              ],
+              z: {
+                species: 'yeast; 559292'
+              }
+            }
+          ]
+        );
+
+      dictOptimized.mapComplexPortalResToMatchObj(JSON.parse(getMatchesForMelanomaStr), 'melanoma')
+        .should.deep.equal(
+          [
+            {
+              id: 'https://www.ebi.ac.uk/complexportal/complex/CPX-1364',
+              dictID: 'https://www.ebi.ac.uk/complexportal',
+              str: 'SMC5-SMC6 SUMO ligase complex',
+              descr: 'CPX-1364, yeast; 559292, SUMO ligase complex with a role in homologous recombination (HR) and replication. Required for chromosome segregation at repetitive sequences.  Localizes to repetitive elements such as the rDNA and telomeres  where is is thought to promote and resolve HR-dependent intermediates. Also required for telomere maintenance during replication and telomere elongation and for  SUMOylating components of the replisome, such as MCM2 (P29469) and the POL2 (P21951) subunit of the DNA polymerase epsilon complex (CPX-2110), which is important for replication fork progression in the presence of DNA-damaging agents.',
               type: 'T',
               terms: [
                 {
@@ -277,6 +349,30 @@ describe('DictionaryComplexPortal.js', () => {
         { page: 1, perPage: 2 });
       const paginationURLPart4 = '&size=2&start=0';
       url8.should.equal(expectedURL + paginationURLPart4 + formatURLPart);
+
+      cb();
+    });
+  });
+
+  describe('getDescr', () => {
+    it('returns proper description string', cb => {
+      const id = 'CPX-0';
+      let organism = ['XXX; 666'];
+      let description = ['A description string'];
+
+      dict.getDescr(id, organism, description).should.equal('A description string');
+      dictOptimized.getDescr(id, organism, description).should.equal('CPX-0, XXX; 666, A description string');
+
+      organism = [];
+      dict.getDescr(id, organism, description).should.equal('A description string');
+      dictOptimized.getDescr(id, organism, description).should.equal('CPX-0, A description string');
+
+      description = [];
+      dict.getDescr(id, organism, description).should.equal('');
+      dictOptimized.getDescr(id, organism, description).should.equal('CPX-0');
+
+      organism = ['YYY; 777'];
+      dictOptimized.getDescr(id, organism, description).should.equal('CPX-0, YYY; 777');
 
       cb();
     });

@@ -7,6 +7,11 @@ module.exports = class DictionaryComplexPortal extends Dictionary {
     const opt = options || {};
     super(opt);
 
+    // optimized mapping for curators
+    this.optimap = (typeof opt.optimap === 'boolean')
+      ? opt.optimap
+      : true;
+
     // Complex Portal-specific parameters
     this.complexPortalDictID = 'https://www.ebi.ac.uk/complexportal';
     this.complexPortalFields = 'id,name,description,complex_systematic_name,complex_synonym,organism';
@@ -125,11 +130,8 @@ module.exports = class DictionaryComplexPortal extends Dictionary {
     return res.entries.map(entry => ({
       id: this.complexPortalDictID + '/complex/' + entry.fields.id[0],
       dictID: this.complexPortalDictID,
-      ...((entry.fields.description.length !== 0)
-        && {
-          descr: entry.fields.description[0],
-        }
-      ),
+      descr: this.getDescr(entry.fields.id[0], entry.fields.organism,
+        entry.fields.description),
       terms: this.buildTerms(entry.fields.name,
         entry.fields.complex_systematic_name, entry.fields.complex_synonym),
       z: {
@@ -150,11 +152,8 @@ module.exports = class DictionaryComplexPortal extends Dictionary {
         id: this.complexPortalDictID + '/complex/' + entry.fields.id[0],
         dictID: this.complexPortalDictID,
         str: mainTerm,
-        ...((entry.fields.description.length !== 0)
-          && {
-            descr: entry.fields.description[0],
-          }
-        ),
+        descr: this.getDescr(entry.fields.id[0], entry.fields.organism,
+          entry.fields.description),
         type: mainTerm.startsWith(str) ? 'S' : 'T',
         terms: this.buildTerms(entry.fields.name,
           entry.fields.complex_systematic_name, entry.fields.complex_synonym),
@@ -261,6 +260,18 @@ module.exports = class DictionaryComplexPortal extends Dictionary {
       return name[0];
     else // should never happen
       return systematicName[0];
+  }
+
+  getDescr(id, organism, description) {
+    const descr = (description.length !== 0) ? description[0] : '';
+    if (this.optimap) {
+      const species = (organism.length !== 0) ? ', '.concat(organism[0]) : '';
+      return (descr === '')
+        ? id.concat(species)
+        : id.concat(species, ', ', descr);
+    } else {
+      return descr;
+    }
   }
 
   sortEntries(arr, options) {
