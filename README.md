@@ -62,6 +62,18 @@ In the next sections we will explain the mapping between the data
 offered by EBI Search's API and the corresponding VSM objects. Find the 
 documentation for the API here: https://www.ebi.ac.uk/ebisearch/documentation.ebi
 
+Note that if we receive an error response from the EBI Search servers (see the 
+URL requests for `getEnties` and `getEntryMatchesForString` below) that is not a
+JSON string that we can parse, we formulate the error as a JSON object ourselves 
+in the following format:
+```
+{
+  status: <number>,
+  error: <response> 
+}
+```
+where the *response* from the server is JSON stringified.
+
 ### Map Complex Portal to DictInfo VSM object
 
 This specification relates to the function:  
@@ -93,7 +105,7 @@ If the `options.filter.id` is properly defined (with IDs like
 https://www.ebi.ac.uk/ebisearch/ws/rest/complex-portal/entry/CPX-200,CPX-20,CPX-2000?fields=id%2Cname%2Cdescription%2Ccomplex_systematic_name%2Ccomplex_synonym%2Corganism&format=json
 ```
 
-From the above URL, we provide a brief description for each sub-part: 
+For the above URL, we provide a brief description for each sub-part: 
 - The first part refers to the EBI Search's main REST endpoint: https://www.ebi.ac.uk/ebisearch/ws/rest/
 - The second part refers to the **domain** of search (*complex-portal*)
 - The third part refers to the *entry* endpoint (which allows us to request 
