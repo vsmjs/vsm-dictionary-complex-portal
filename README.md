@@ -1,5 +1,11 @@
 # vsm-dictionary-complex-portal
 
+<!-- badges: start -->
+[![Travis build status](https://travis-ci.org/vsmjs/vsm-dictionary-complex-portal.svg?branch=master)](https://travis-ci.org/vsmjs/vsm-dictionary-complex-portal)
+[![npm version](https://img.shields.io/npm/v/vsm-dictionary-complex-portal)](https://www.npmjs.com/package/vsm-dictionary-complex-portal)
+[![Downloads](https://img.shields.io/npm/dm/vsm-dictionary-complex-portal)](https://www.npmjs.com/package/vsm-dictionary-complex-portal)
+<!-- badges: end -->
+
 ## Summary
 
 `vsm-dictionary-complex-portal` is an implementation 
