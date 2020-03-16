@@ -2,8 +2,10 @@
 
 <!-- badges: start -->
 [![Build Status](https://travis-ci.com/UniBioDicts/vsm-dictionary-complex-portal.svg?branch=master)](https://travis-ci.com/UniBioDicts/vsm-dictionary-complex-portal)
+[![codecov](https://codecov.io/gh/UniBioDIcts/vsm-dictionary-complex-portal/branch/master/graph/badge.svg)](https://codecov.io/gh/UniBioDIcts/vsm-dictionary-complex-portal)
 [![npm version](https://img.shields.io/npm/v/vsm-dictionary-complex-portal)](https://www.npmjs.com/package/vsm-dictionary-complex-portal)
 [![Downloads](https://img.shields.io/npm/dm/vsm-dictionary-complex-portal)](https://www.npmjs.com/package/vsm-dictionary-complex-portal)
+[![License](https://img.shields.io/npm/l/vsm-dictionary-complex-portal)](#license)
 <!-- badges: end -->
 
 ## Summary
