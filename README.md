@@ -1,7 +1,7 @@
 # vsm-dictionary-complex-portal
 
 <!-- badges: start -->
-[![Travis build status](https://travis-ci.org/vsmjs/vsm-dictionary-complex-portal.svg?branch=master)](https://travis-ci.org/vsmjs/vsm-dictionary-complex-portal)
+[![Build Status](https://travis-ci.com/UniBioDicts/vsm-dictionary-complex-portal.svg?branch=master)](https://travis-ci.com/UniBioDicts/vsm-dictionary-complex-portal)
 [![npm version](https://img.shields.io/npm/v/vsm-dictionary-complex-portal)](https://www.npmjs.com/package/vsm-dictionary-complex-portal)
 [![Downloads](https://img.shields.io/npm/dm/vsm-dictionary-complex-portal)](https://www.npmjs.com/package/vsm-dictionary-complex-portal)
 <!-- badges: end -->
@@ -15,6 +15,10 @@ the [EBI Search RESTful Web Services](https://www.ebi.ac.uk/ebisearch/apidoc.ebi
 to interact with the [Complex Portal database](https://www.ebi.ac.uk/complexportal/home) 
 and translate the provided manually curated macromolecular complexes information 
 into a VSM-specific format.
+
+## Install
+
+Run: `npm install`
 
 ## Example use
 
