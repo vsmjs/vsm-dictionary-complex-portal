@@ -24,10 +24,13 @@ Run: `npm install`
 
 ## Example use
 
-Create a `test.js` file and include this code:
+### Node.js
+
+Create a directory `test-dir` and inside run `npm install vsm-dictionary-complex-portal`.
+Then, create a `test.js` file and include this code for example:
 
 ```javascript
-const DictionaryComplexPortal = require('./DictionaryComplexPortal');
+const DictionaryComplexPortal = require('vsm-dictionary-complex-portal');
 const dict = new DictionaryComplexPortal({log: true});
 
 dict.getEntryMatchesForString('tp53', { page: 1, perPage: 5 }, 
@@ -40,6 +43,13 @@ dict.getEntryMatchesForString('tp53', { page: 1, perPage: 5 },
 );
 ```
 Then, run `node test.js`
+
+### Browsers
+
+```html
+<script src="https://unpkg.com/vsm-dictionary-complex-portal@^1.0.0/dist/vsm-dictionary-complex-portal.min.js"></script>
+```
+after which it is accessible as the global variable `VsmDictionaryComplexPortal`.
 
 ## Tests
 
